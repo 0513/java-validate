@@ -1,22 +1,30 @@
 package net.tobebetter.validate;
 
+import java.io.UnsupportedEncodingException;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * reids连接池
- * Created by 0513 on 2017/2/6.
+ * 错误提示信息
  */
 public class Messages {
+    public static ResourceBundle bundle;
     public static final String required;
 
     static {
-        ResourceBundle bundle;
         try {
-            bundle = ResourceBundle.getBundle("message-tobebetter");
+            bundle = ResourceBundle.getBundle("messages.tobebetter");
         } catch (MissingResourceException e) {
-            bundle = ResourceBundle.getBundle("message");
+            bundle = ResourceBundle.getBundle("messages");
         }
-        required = bundle.getString("required");
+        required = getPropertiesStringEncode("required");
+    }
+
+    private static String getPropertiesStringEncode(String key) {
+        try {
+            return new String(bundle.getString(key).getBytes("ISO-8859-1"), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
